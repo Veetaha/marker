@@ -30,7 +30,7 @@ First add `marker_utils` to the dev-dependencies of the lint crate, and specify 
 
 ```toml
 [dev-dependencies]
-marker_uitest = "<version>"
+marker_uitest = "0.2.1"
 
 [[test]]
 name = "uitest"
@@ -47,7 +47,7 @@ use std::{env, path::Path};
 
 fn main() -> color_eyre::Result<()> {
     let mut config = marker_uitest::simple_ui_test_config!()?;
-    
+
     // Allows you to automatically update `.stderr` and `.stdout` files
     let bless = env::var_os("RUST_BLESS").is_some() || env::args().any(|arg| arg == "--bless");
     if bless {
@@ -79,4 +79,3 @@ Copyright (c) 2022-2023 Rust-Marker
 Rust-marker is distributed under the terms of the MIT license or the Apache License (Version 2.0).
 
 See [LICENSE-APACHE](https://github.com/rust-marker/marker/blob/master/LICENSE-APACHE), [LICENSE-MIT](https://github.com/rust-marker/marker/blob/master/LICENSE-MIT).
-

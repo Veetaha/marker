@@ -1,0 +1,66 @@
+name: release
+on:
+  workflow_dispatch:
+    inputs:
+      release-version:
+        required: false
+        description:
+          (Optional) Version to set for the release. If not specified, the latest
+          numbered version found in the changelog will be used.
+      next-dev-version:
+        required: false
+        description:
+          (Optional) Version to set for the next development cycle. If not specified,
+          then the `version` with the incremented minor and `-dev` suffix will be used.
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # We need just the cargo executable to update the `Cargo.lock` file.
+      # Github runners have `cargo` installed by default, so we don't even
+      # need to download it. However, we need to remove the `rust-toolchain.toml`
+      # so that `cargo` rustup proxy doesn't attempt to install the toolchain
+      # pinned in this repo.
+      - run: rm rust-toolchain.toml
+
+      - name: Resolve the release version
+        run: |
+          version=${{ github.event.inputs.release-version || '$(scripts/release/get-version-from-changelog.sh)' }}
+          echo "release_version=$version" >> $GITHUB_ENV
+      - name: Resolve the next version
+        run: |
+          next_dev_version=${{
+              github.event.inputs.next-dev-version ||
+              format('$(scripts/release/get-next-dev-version.sh {0})', env.release_version)
+          }}
+          echo "next_dev_version=$next_dev_version" >> $GITHUB_ENV
+
+      # Kudos to this guy for help:
+      # https://github.com/actions/checkout/issues/13#issuecomment-724415212
+      - run: |
+          git config user.name "Github Actions"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # Create a release commit and tag
+      - run: scripts/release/set-version.sh ${{ env.release_version }}
+      - run: git add Cargo.toml Cargo.lock
+      - run: git commit --message "Release v${{ env.release_version }}"
+      - run: git tag v${{ env.release_version }}
+
+      # Create a next dev version commit
+      - run: scripts/release/set-version.sh ${{ env.next_dev_version }}
+      - run: git add Cargo.toml Cargo.lock
+      - run: git commit --message "Development v${{ env.next_dev_version }}"
+
+      # Push the branch and the new tag
+      - run: git push --atomic origin ${{ github.ref_name }} v${{ env.release_version }}

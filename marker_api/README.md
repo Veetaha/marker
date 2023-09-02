@@ -45,8 +45,8 @@ To get started, create a new Rust crate that compiles to a library (`cargo init 
 crate-type = ["cdylib"]
 
 [dependencies]
-marker_api = "<version>"
-marker_utils = "<version>"
+marker_api = "0.2.1"
+marker_utils = "0.2.1"
 ```
 
 #### src/lib.rs

@@ -21,7 +21,7 @@ To get started, just include *marker_utils* as a dependency:
 
 ```toml
 [dependencies]
-marker_api = "<version>"
+marker_api = "0.2.1"
 ```
 
 You can also add [marker_lints] as a lint crate, designed for this crate:

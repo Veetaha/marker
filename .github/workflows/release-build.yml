@@ -1,0 +1,45 @@
+name: release-build
+permissions:
+  contents: write
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  create-github-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: taiki-e/create-gh-release-action@v1
+        with:
+          changelog: CHANGELOG.md
+          branch: master
+          token: ${{ github.token }}
+
+  build-cargo-marker:
+    needs: [create-github-release]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - { os: windows-2022, target: x86_64-pc-windows-msvc,         build_tool: cargo }
+          - { os: macos-12-xl,  target: x86_64-apple-darwin,            build_tool: cargo }
+          - { os: macos-12-xl,  target: aarch64-apple-darwin,           build_tool: cargo }
+          - { os: macos-12-xl,  target: universal-apple-darwin,         build_tool: cargo }
+          - { os: ubuntu-22.04, target: x86_64-unknown-linux-gnu.2.17,  build_tool: cargo-zigbuild }
+          - { os: ubuntu-22.04, target: x86_64-unknown-linux-musl,      build_tool: cargo-zigbuild }
+          - { os: ubuntu-22.04, target: aarch64-unknown-linux-gnu.2.17, build_tool: cargo-zigbuild }
+          - { os: ubuntu-22.04, target: aarch64-unknown-linux-musl,     build_tool: cargo-zigbuild }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - uses: taiki-e/upload-rust-binary-action@v1
+        with:
+          bin: cargo-marker
+          target: ${{ matrix.target }}
+          token: ${{ github.token }}
+          checksum: sha256
+          tar: all
+          zip: all
+          build_tool: ${{ matrix.build_tool }}
