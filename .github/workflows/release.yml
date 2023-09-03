@@ -21,7 +21,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      # We need just the cargo executable to update the `Cargo.lock` file.
+      # Github runners have `cargo` installed by default, so we don't even
+      # need to download it. However, we need to remove the `rust-toolchain.toml`
+      # so that `cargo` rustup proxy doesn't attempt to install the toolchain
+      # pinned in this repo.
+      - run: rm rust-toolchain.toml
 
       - id: version
         run: >
@@ -43,7 +49,11 @@ jobs:
       # Create a release commit and tag
       - run: scripts/release/set-version.sh ${{ steps.version.outputs.version }}
       - run: git commit --all --message "Release v${{ steps.version.outputs.version }}"
+<<<<<<< HEAD
       - run: git tag v${{ steps.get-version.outputs.version }}"
+=======
+      - run: git tag v${{ steps.version.outputs.version }}"
+>>>>>>> 89368ef (Fix)
 
       # Craete a next dev version commit
       - run: scripts/release/set-version.sh ${{ steps.dev-version.outputs.dev-version }}
