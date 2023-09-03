@@ -36,14 +36,18 @@ jobs:
           }}"
           >> "$GITHUB_OUTPUT"
 
+      - run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       # Create a release commit and tag
       - run: scripts/release/set-version.sh ${{ steps.version.outputs.version }}
-      - run: git commit -am "Release v${{ steps.version.outputs.version }}"
+      - run: git commit --all --message "Release v${{ steps.version.outputs.version }}"
       - run: git tag v${{ steps.get-version.outputs.version }}"
 
       # Craete a next dev version commit
       - run: scripts/release/set-version.sh ${{ steps.dev-version.outputs.dev-version }}
-      - run: git commit -am "Development v${{ steps.dev-version.outputs.dev-version }}"
+      - run: git commit --all --message "Development v${{ steps.dev-version.outputs.dev-version }}"
 
       # Push the commits and tags
       - run: git push --atomic --follow-tags
