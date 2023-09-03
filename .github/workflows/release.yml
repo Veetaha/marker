@@ -49,11 +49,7 @@ jobs:
       # Create a release commit and tag
       - run: scripts/release/set-version.sh ${{ steps.version.outputs.version }}
       - run: git commit --all --message "Release v${{ steps.version.outputs.version }}"
-<<<<<<< HEAD
-      - run: git tag v${{ steps.get-version.outputs.version }}"
-=======
       - run: git tag v${{ steps.version.outputs.version }}"
->>>>>>> 89368ef (Fix)
 
       # Craete a next dev version commit
       - run: scripts/release/set-version.sh ${{ steps.dev-version.outputs.dev-version }}
