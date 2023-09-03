@@ -16,7 +16,7 @@ edition    = "2021"
 keywords   = ["marker", "lint"]
 license    = "MIT OR Apache-2.0"
 repository = "https://github.com/rust-marker/marker"
-version    = "0.3.0-dev"
+version    = "0.3.0-dev.1"
 
 # The MSRV is applied to the public library crates published to crates.io
 rust-version = "1.66"

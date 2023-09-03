@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0-dev.1](https://github.com/Veetaha/marker/compare/marker_api-v0.3.0-dev...marker_api-v0.3.0-dev.1) - 2023-09-03
+
+### Other
+- More fixes in grammar and wording
+- Fix wording
+- Fixes from the review
+- Fix small typos and grammar mistakes
+- Improve error handling and observability
+
 
 ## [0.2.1] - 2023-08-24
 
