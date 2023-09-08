@@ -132,5 +132,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # We need just the cargo executable to update the `Cargo.lock` file.
+      # Github runners have `cargo` installed by default, so we don't even
+      # need to download it. However, we need to remove the `rust-toolchain.toml`
+      # so that `cargo` rustup proxy doesn't attempt to install the toolchain
+      # pinned in this repo.
+      - run: rm rust-toolchain.toml
+
       # Check that the release automation works as expected
       - run: scripts/release/test.sh
