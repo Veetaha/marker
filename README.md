@@ -48,7 +48,7 @@ On UNIX-like systems, you can run the following bash script. It will install the
 <!-- region replace-version stable -->
 ```bash
 curl --location --silent --fail --show-error --retry 5 --retry-connrefused \
-    https://raw.githubusercontent.com/rust-marker/marker/v0.2.1/scripts/release/install.sh | bash
+    https://raw.githubusercontent.com/rust-marker/marker/v0.3.0/scripts/release/install.sh | bash
 ```
 <!-- endregion replace-version stable -->
 
@@ -77,7 +77,7 @@ marker_lints = { path = './marker_lints' }
 # An external crate via git
 marker_lints = { git = "https://github.com/rust-marker/marker" }
 # An external crate from a registry
-marker_lints = "0.2.1"
+marker_lints = "0.3.0"
 ```
 <!-- endregion replace-version stable -->
 
