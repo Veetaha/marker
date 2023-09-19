@@ -52,7 +52,7 @@ with_log curl \
     --retry-connrefused \
     --remote-name \
     --output-dir "$temp_dir" \
-    "https://github.com/rust-marker/marker/releases/download/v$version/$files"
+    "https://github.com/Veetaha/marker/releases/download/v$version/$files"
 
 function extract_archive {
     local bin="$1"
