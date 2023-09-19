@@ -21,6 +21,10 @@ The following components are considered to be internal and they are excluded fro
 - `marker_adapter`
 - `marker_error`
 
+## [0.4.0-rc.123]
+
+Test pre-release
+
 ## [0.3.0]
 
 [#231]: https://github.com/rust-marker/marker/pull/231
