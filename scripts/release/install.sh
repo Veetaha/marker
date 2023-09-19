@@ -12,7 +12,7 @@ set -Eeuo pipefail
 # There isn't a release of the `dev`, version, however the released version
 # of marker will replace this version with the actual one.
 # region replace-version unstable
-version=0.3.0
+version=0.4.0-rc.123
 # endregion replace-version unstable
 
 toolchain=nightly-2023-08-24
