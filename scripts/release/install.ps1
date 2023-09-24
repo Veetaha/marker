@@ -16,7 +16,7 @@ $ErrorActionPreference = "Stop"
 # This script isn't meant to be run from `master`, but if it is, then
 # it will install the latest version be it a stable version or a pre-release.
 # region replace-version unstable
-$version = "0.2.1"
+$version = "0.3.0"
 # endregion replace-version unstable
 
 $toolchain = "nightly-2023-08-24"
@@ -126,7 +126,7 @@ try {
         --retry-connrefused `
         --remote-name `
         --output-dir $temp_dir `
-        "https://github.com/rust-marker/marker/releases/download/v$version/$files"
+        "https://github.com/Veetaha/marker/releases/download/v$version/$files"
 
     # There is a null coalescing operator in PowerShell 7, but that version
     # is too cutting edge for now.
