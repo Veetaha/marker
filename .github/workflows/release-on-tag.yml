@@ -5,7 +5,9 @@
 name: release-on-tag
 on:
   push:
-    tags: ['v*']
+    # Match only on specific tags. We don't want this workflow to be recursively
+    # invoked when we put a sliding `vX` and `vX.Y` tags on the same commit.
+    tags: ['v[0-9]+.[0-9]+.[0-9]+*']
 
 defaults:
   run:

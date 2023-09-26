@@ -31,7 +31,10 @@ jobs:
       - name: Resolve the release version
         run: echo "release_version=$(scripts/release/get-version-from-changelog.sh)" >> $GITHUB_ENV
       - name: Resolve the next dev version
-        run: echo "next_dev_version=$(scripts/release/get-next-dev-version.sh ${{ env.release_version }})" >> $GITHUB_ENV
+        run: echo "next_dev_version=$(scripts/release/get-next-dev-version.sh '${{ env.release_version }})" >> $GITHUB_ENV
+      - name: Resolve the git tags
+        run: echo "tags=$(scripts/release/get-git-tags.sh ${{ env.release_version }})" >> $GITHUB_ENV
+
 
       # To be able to create a commit we need some committer identity.
       - run: |
@@ -42,11 +45,14 @@ jobs:
       - run: scripts/release/set-version.sh ${{ env.release_version }}
           --commit "🚀 Release v${{ env.release_version }}"
 
-      - run: git tag v${{ env.release_version }}
+      - run: |
+          for tag in ${{ env.tags }}; do
+            git tag v${{ env.release_version }}
+          done
 
       # Create a next dev version commit
       - run: scripts/release/set-version.sh ${{ env.next_dev_version }}
           --commit "🚧 Development v${{ env.next_dev_version }}"
 
       # Push the branch and the new tag to the remote
-      - run: git push --atomic origin ${{ github.ref_name }} v${{ env.release_version }}
+      - run: git push --atomic origin ${{ github.ref_name }} ${{ env.tags }}
