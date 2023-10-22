@@ -7,10 +7,5 @@ fn main() -> color_eyre::Result<()> {
     config.filter(r"\\/", "/");
     config.filter(r"\\\\", "/");
 
-    run_tests_generic(
-        vec![config],
-        default_file_filter,
-        default_per_file_config,
-        status_emitter::Text::quiet(),
-    )
+    run_tests(config)
 }

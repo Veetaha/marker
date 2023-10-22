@@ -1,6 +1,7 @@
 #![doc = include_str!("../README.md")]
 #![warn(clippy::pedantic)]
 
+mod issues;
 mod utils;
 
 use marker_api::{
@@ -79,12 +80,14 @@ impl LintPass for TestLintPass {
             ITEM_WITH_TEST_NAME,
             PRINT_EVERY_EXPR,
             utils::TEST_CONTAINS_RETURN,
+            issues::issue_301::ISSUE_301,
         ]))
         .build()
     }
 
     fn check_item<'ast>(&mut self, cx: &'ast MarkerContext<'ast>, item: ItemKind<'ast>) {
         utils::check_item(cx, item);
+        issues::issue_301::check_item(cx, item);
 
         if let ItemKind::Fn(item) = item {
             if let Some(ident) = item.ident() {
