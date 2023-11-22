@@ -28,7 +28,7 @@ version=0.4.0
 # endregion replace marker version unstable
 
 # region replace rust toolchain release
-toolchain=nightly-2023-10-05
+toolchain=nightly-2023-11-16
 # endregion replace rust toolchain release
 
 function step {
