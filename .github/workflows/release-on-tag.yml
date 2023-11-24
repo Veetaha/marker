@@ -41,7 +41,7 @@ jobs:
     # GitHub doesn't let you split the `${{ }}` syntax into multiple lines 🤦.
     # Anyway, let's return to the topic... The reason why we pin the specific
     # versions of OSes is described in the docs under `docs/internal/release.md`
-    runs-on: ${{ contains(matrix.target, 'windows') && 'windows-2019' || contains(matrix.target, 'darwin') && 'macos-11' || 'ubuntu-20.04' }}
+    runs-on: ${{ contains(matrix.target, 'windows') && 'windows-2022' || contains(matrix.target, 'darwin') && 'macos-11' || 'ubuntu-20.04' }}
 
     strategy:
       # If it happens so that some binaries fail to build, then we can have a
