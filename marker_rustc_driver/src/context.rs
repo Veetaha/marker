@@ -65,7 +65,7 @@ impl<'ast, 'tcx> RustcContext<'ast, 'tcx> {
                 .build(),
         );
         driver_cx.ast_cx.set(ast_cx).unwrap();
-
+        dbg!("driver_cx");
         driver_cx
     }
 

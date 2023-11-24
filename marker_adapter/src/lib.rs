@@ -69,6 +69,7 @@ impl Adapter {
     }
 
     pub fn process_krate<'ast>(&self, cx: &'ast MarkerContext<'ast>, krate: &'ast Crate<'ast>) {
+        dbg!("process_krate");
         let inner = &mut *self.inner.borrow_mut();
 
         inner.external_lint_crates.set_ast_context(cx);

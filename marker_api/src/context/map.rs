@@ -36,6 +36,7 @@ use crate::{
 ///     structs, as it was known that they only need to handle one crate at a time.
 #[repr(C)]
 #[cfg_attr(feature = "driver-api", derive(typed_builder::TypedBuilder))]
+#[derive(Debug)]
 pub struct AstMap<'ast> {
     callbacks: AstMapCallbacks<'ast>,
 }
@@ -124,6 +125,7 @@ impl<'ast> AstMap<'ast> {
 #[repr(C)]
 #[cfg_attr(feature = "driver-api", visibility::make(pub))]
 #[cfg_attr(feature = "driver-api", derive(typed_builder::TypedBuilder))]
+#[derive(Debug)]
 struct AstMapCallbacks<'ast> {
     /// The data that will be used as the first argument for the callback functions.
     /// The content of this data is defined by the driver (or by marker_adapter on behalf
@@ -148,6 +150,7 @@ struct AstMapCallbacks<'ast> {
 /// casting target.
 #[repr(C)]
 #[cfg_attr(feature = "driver-api", visibility::make(pub))]
+#[derive(Debug)]
 struct AstMapData {
     /// `#[repr(C)]` requires a field, to make this a proper type. Using usize
     /// ensures that the structs has the same alignment requirement as a pointer.

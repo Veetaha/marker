@@ -301,7 +301,7 @@ pub fn try_main(args: impl Iterator<Item = String>) -> Result<(), MainError> {
     orig_args.extend(additional_args);
 
     let mut callback = MarkerCallback { env_vars, lint_crates };
-    rustc_driver::RunCompiler::new(&orig_args, &mut callback).run()?;
+    dbg!(rustc_driver::RunCompiler::new(&orig_args, &mut callback).run())?;
 
     Ok(())
 }

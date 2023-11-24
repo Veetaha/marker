@@ -42,6 +42,7 @@ rustc_lint_defs::impl_lint_pass!(RustcLintPass => []);
 
 impl<'tcx> rustc_lint::LateLintPass<'tcx> for RustcLintPass {
     fn check_crate(&mut self, rustc_cx: &rustc_lint::LateContext<'tcx>) {
+        dbg!("check_crate");
         ADAPTER.with(|adapter| {
             process_crate(rustc_cx, adapter.get().unwrap());
         });
@@ -66,6 +67,8 @@ fn process_crate_lifetime<'ast, 'tcx: 'ast>(
     // context. Note that this only sets the cx for the rustc side. Each lint crate
     // has their own storage for cx.
     marker_api::context::set_ast_cx(driver_cx.ast_cx());
+
+    dbg!("set_ast_cx");
 
     let krate = driver_cx.marker_converter.local_crate();
 

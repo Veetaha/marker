@@ -308,6 +308,7 @@ impl<'ast> MarkerContext<'ast> {
 /// type provides a simple wrapper to avoid driver unrelated boilerplate code.
 #[repr(C)]
 #[cfg_attr(feature = "driver-api", visibility::make(pub))]
+#[derive(Debug)]
 struct MarkerContextCallbacks<'ast> {
     /// The data that will be used as the first argument for the callback functions.
     /// The content of this data is defined by the driver (or by marker_adapter on behalf
@@ -359,6 +360,7 @@ impl<'ast> MarkerContextCallbacks<'ast> {
 /// casting target.
 #[repr(C)]
 #[cfg_attr(feature = "driver-api", visibility::make(pub))]
+#[derive(Debug)]
 struct MarkerContextData {
     /// `#[repr(C)]` requires a field, to make this a proper type. Using usize
     /// ensures that the structs has the same alignment requirement as a pointer.

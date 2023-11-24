@@ -100,6 +100,7 @@ impl LintPass for LintCrateRegistry {
     }
 
     fn check_crate<'ast>(&mut self, cx: &'ast MarkerContext<'ast>, krate: &'ast marker_api::ast::Crate<'ast>) {
+        dbg!("check_crate");
         for lp in &self.passes {
             (lp.bindings.check_crate)(cx, krate);
         }
