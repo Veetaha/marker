@@ -98,7 +98,7 @@ impl rustc_driver::Callbacks for MarkerCallback {
                 .map(RustcConverter::static_to_lint)
                 .collect();
 
-            lint_store.register_lints(&lints);
+            lint_store.register_lints(dbg!(&lints));
 
             lint_store.register_late_pass(|_| Box::new(lint_pass::RustcLintPass));
         }));

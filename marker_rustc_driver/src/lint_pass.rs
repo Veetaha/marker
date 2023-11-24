@@ -27,7 +27,7 @@ impl RustcLintPass {
     #[allow(clippy::missing_errors_doc)]
     pub fn init_adapter(lint_crates: &[LintCrateInfo]) -> Result<(), marker_adapter::Error> {
         ADAPTER.with(move |cell| {
-            cell.get_or_try_init(|| Adapter::new(lint_crates))?;
+            cell.get_or_try_init(|| dbg!(Adapter::new(lint_crates)))?;
             Ok(())
         })
     }

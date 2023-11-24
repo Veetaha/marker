@@ -79,7 +79,7 @@ impl LintCrateRegistry {
 
         Error::try_many(errors, "Found several lint name conflicts")?;
 
-        Ok(new_self)
+        Ok(dbg!(new_self))
     }
 
     pub(super) fn set_ast_context<'ast>(&self, cx: &'ast MarkerContext<'ast>) {
@@ -161,20 +161,17 @@ impl std::fmt::Debug for LoadedLintCrate {
 
 impl LoadedLintCrate {
     fn try_from_info(info: LintCrateInfo) -> Result<Self> {
-        println!("Loading lint crate: {info:#?}");
         eprintln!("Loading lint crate: {info:#?}");
 
         let lib = unsafe { Library::new(&info.path) };
 
-
-        println!("Lint crate loaded: {info:#?}");
         eprintln!("Lint crate loaded: {info:#?}");
 
         let lib = lib.context(|| format!("Failed to load lint crate `{}`", info.name))?;
 
         let lib: &'static Library = Box::leak(Box::new(lib));
 
-        let pass = LoadedLintCrate::try_from_lib(lib, info)?;
+        let pass = dbg!(LoadedLintCrate::try_from_lib(lib, info))?;
 
         Ok(pass)
     }
@@ -184,13 +181,11 @@ impl LoadedLintCrate {
         let get_api_version =
             unsafe { get_symbol::<extern "C" fn() -> &'static str>(lib, &info, b"marker_api_version\0")? };
 
-        println!("Loaded get_api_version: {get_api_version:#?}");
         eprintln!("Loaded get_api_version: {get_api_version:#?}");
 
         let marker_api_version = get_api_version();
 
 
-        println!("API version: {marker_api_version:#?}");
         eprintln!("API version: {marker_api_version:#?}");
 
         if marker_api_version != MARKER_API_VERSION {
@@ -204,7 +199,13 @@ impl LoadedLintCrate {
         let get_lint_crate_bindings =
             unsafe { get_symbol::<extern "C" fn() -> LintCrateBindings>(lib, &info, b"marker_lint_crate_bindings\0")? };
 
+
+        eprintln!("Loaded get_lint_crate_bindings: {get_lint_crate_bindings:#?}");
+
+
         let bindings = get_lint_crate_bindings();
+
+        eprintln!("Loaded bindings: {bindings:#?}");
 
         Ok(Self {
             _lib: lib,
@@ -220,7 +221,6 @@ unsafe fn get_symbol<T>(
     info: &LintCrateInfo,
     symbol_with_nul: &[u8],
 ) -> Result<libloading::Symbol<'static, T>> {
-    println!("get_symbol: {}", String::from_utf8_lossy(symbol_with_nul));
     eprintln!("get_symbol: {}", String::from_utf8_lossy(symbol_with_nul));
     lib.get::<T>(symbol_with_nul).context(|| {
         format!(

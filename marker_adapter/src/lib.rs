@@ -51,7 +51,7 @@ impl Adapter {
     pub fn new(lint_crates: &[LintCrateInfo]) -> Result<Self> {
         let external_lint_crates = LintCrateRegistry::new(lint_crates)?;
         Ok(Self {
-            inner: RefCell::new(AdapterInner { external_lint_crates }),
+            inner: dbg!(RefCell::new(AdapterInner { external_lint_crates })),
         })
     }
 

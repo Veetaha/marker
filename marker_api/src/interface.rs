@@ -7,6 +7,7 @@ use crate::{context::MarkerContext, ffi::FfiSlice, lint::Lint};
 /// This struct is used to connect lint crates to drivers.
 #[repr(C)]
 #[doc(hidden)]
+#[derive(Debug)]
 pub struct LintCrateBindings {
     pub set_ast_context: for<'ast> extern "C" fn(cx: &'ast MarkerContext<'ast>),
 
