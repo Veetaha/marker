@@ -72,5 +72,7 @@ fn process_crate_lifetime<'ast, 'tcx: 'ast>(
 
     let krate = driver_cx.marker_converter.local_crate();
 
+    dbg!("driver_cx.marker_converter.local_crate() is done");
+
     adapter.process_krate(driver_cx.ast_cx(), krate);
 }

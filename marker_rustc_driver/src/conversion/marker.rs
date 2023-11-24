@@ -146,9 +146,9 @@ impl<'ast, 'tcx> MarkerConverter<'ast, 'tcx> {
         scx: rustc_span::SyntaxContext,
         pos: rustc_span::BytePos,
     ) -> Option<FilePos<'ast>>);
-    forward_to_inner!(pub fn local_crate(
-        &self,
-    ) -> &'ast Crate<'ast>);
+    pub fn local_crate(&self) -> &'ast Crate<'ast> {
+        self.inner.local_crate()
+    }
 }
 
 macro_rules! forward_to_inner {
@@ -310,6 +310,8 @@ impl<'ast, 'tcx> MarkerConverterInner<'ast, 'tcx> {
     #[must_use]
     fn local_crate(&self) -> &'ast Crate<'ast> {
         self.krate.get_or_init(|| {
+            dbg!("krate.get_or_init");
+
             let krate = self.alloc(
                 Crate::builder()
                     .id(self.to_crate_id(hir::def_id::LOCAL_CRATE))
@@ -317,15 +319,30 @@ impl<'ast, 'tcx> MarkerConverterInner<'ast, 'tcx> {
                     .build(),
             );
 
+            dbg!("crate allocated");
+            dbg!(krate);
+
             let root_mod = krate.root_mod();
             self.items.borrow_mut().insert(root_mod.id(), ItemKind::Mod(root_mod));
+
             krate
         })
     }
 
     fn local_crate_mod(&self) -> ModItem<'ast> {
+        dbg!("local_crate_mod");
+
         let id = self.to_item_id(hir::def_id::DefId::from(hir::CRATE_OWNER_ID));
+
+        dbg!("to_item_id done");
+        dbg!(id);
+        dbg!("root_module");
+
         let krate_mod = self.rustc_cx.hir().root_module();
+        dbg!("root_module done");
+        dbg!(krate_mod);
+        dbg!("to_symbol_id");
+
         let ident = Ident::new(
             self.to_symbol_id(self.rustc_cx.crate_name(hir::def_id::LOCAL_CRATE)),
             self.to_span_id(rustc_span::DUMMY_SP),
