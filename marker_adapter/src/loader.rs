@@ -161,7 +161,14 @@ impl std::fmt::Debug for LoadedLintCrate {
 
 impl LoadedLintCrate {
     fn try_from_info(info: LintCrateInfo) -> Result<Self> {
+        println!("Loading lint crate: {info:#?}");
+        eprintln!("Loading lint crate: {info:#?}");
+
         let lib = unsafe { Library::new(&info.path) };
+
+
+        println!("Lint crate loaded: {info:#?}");
+        eprintln!("Lint crate loaded: {info:#?}");
 
         let lib = lib.context(|| format!("Failed to load lint crate `{}`", info.name))?;
 
@@ -177,7 +184,15 @@ impl LoadedLintCrate {
         let get_api_version =
             unsafe { get_symbol::<extern "C" fn() -> &'static str>(lib, &info, b"marker_api_version\0")? };
 
+        println!("Loaded get_api_version: {get_api_version:#?}");
+        eprintln!("Loaded get_api_version: {get_api_version:#?}");
+
         let marker_api_version = get_api_version();
+
+
+        println!("API version: {marker_api_version:#?}");
+        eprintln!("API version: {marker_api_version:#?}");
+
         if marker_api_version != MARKER_API_VERSION {
             return Err(Error::from_kind(ErrorKind::IncompatibleMarkerApiVersion {
                 lint_krate: info.name,
@@ -205,6 +220,8 @@ unsafe fn get_symbol<T>(
     info: &LintCrateInfo,
     symbol_with_nul: &[u8],
 ) -> Result<libloading::Symbol<'static, T>> {
+    println!("get_symbol: {}", String::from_utf8_lossy(symbol_with_nul));
+    eprintln!("get_symbol: {}", String::from_utf8_lossy(symbol_with_nul));
     lib.get::<T>(symbol_with_nul).context(|| {
         format!(
             "The loaded lint crate {} doesn't contain the symbol {}.\n\
