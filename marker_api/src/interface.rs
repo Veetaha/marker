@@ -2,6 +2,7 @@
 //! [`export_lint_pass`](crate::export_lint_pass) is the main macro, from this module.
 
 use crate::{context::MarkerContext, ffi::FfiSlice, lint::Lint};
+use std::ffi::c_void;
 
 /// **!Unstable!**
 /// This struct is used to connect lint crates to drivers.
@@ -10,8 +11,11 @@ use crate::{context::MarkerContext, ffi::FfiSlice, lint::Lint};
 pub struct LintCrateBindings {
     pub set_ast_context: for<'ast> extern "C" fn(cx: &'ast MarkerContext<'ast>),
 
+    pub init: extern "C" fn() -> std::ptr::Unique<*mut c_void>,
+
     // lint pass functions
     pub info: for<'ast> extern "C" fn() -> LintPassInfo,
+
     pub check_crate: for<'ast> extern "C" fn(&'ast MarkerContext<'ast>, &'ast crate::ast::Crate<'ast>),
     pub check_item: for<'ast> extern "C" fn(&'ast MarkerContext<'ast>, crate::ast::ItemKind<'ast>),
     pub check_field: for<'ast> extern "C" fn(&'ast MarkerContext<'ast>, &'ast crate::ast::ItemField<'ast>),

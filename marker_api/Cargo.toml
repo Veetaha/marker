@@ -12,6 +12,7 @@ rust-version = { workspace = true }
 version      = { workspace = true }
 
 [dependencies]
+inventory     = "0.3"
 typed-builder = { workspace = true, optional = true }
 visibility    = { workspace = true, optional = true }
 

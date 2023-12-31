@@ -11,11 +11,13 @@
 
 pub static MARKER_API_VERSION: &str = env!("CARGO_PKG_VERSION");
 
-mod interface;
-mod private;
 pub use interface::*;
-mod lint;
 pub use lint::*;
+
+mod interface;
+mod lint;
+mod lint_pass;
+mod private;
 
 #[cfg(test)]
 pub(crate) mod test;
@@ -32,23 +34,7 @@ pub mod span;
 pub mod ffi;
 
 pub use context::MarkerContext;
-pub use interface::{LintPassInfo, LintPassInfoBuilder};
-
-/// A [`LintPass`] visits every node like a `Visitor`. The difference is that a
-/// [`LintPass`] provides some additional information about the implemented lints.
-/// The adapter will walk through the entire AST once and give each node to the
-/// registered [`LintPass`]es.
-pub trait LintPass {
-    fn info(&self) -> LintPassInfo;
-
-    fn check_crate<'ast>(&mut self, _cx: &'ast MarkerContext<'ast>, _krate: &'ast ast::Crate<'ast>) {}
-    fn check_item<'ast>(&mut self, _cx: &'ast MarkerContext<'ast>, _item: ast::ItemKind<'ast>) {}
-    fn check_field<'ast>(&mut self, _cx: &'ast MarkerContext<'ast>, _field: &'ast ast::ItemField<'ast>) {}
-    fn check_variant<'ast>(&mut self, _cx: &'ast MarkerContext<'ast>, _variant: &'ast ast::EnumVariant<'ast>) {}
-    fn check_body<'ast>(&mut self, _cx: &'ast MarkerContext<'ast>, _body: &'ast ast::Body<'ast>) {}
-    fn check_stmt<'ast>(&mut self, _cx: &'ast MarkerContext<'ast>, _stmt: ast::StmtKind<'ast>) {}
-    fn check_expr<'ast>(&mut self, _cx: &'ast MarkerContext<'ast>, _expr: ast::ExprKind<'ast>) {}
-}
+pub use interface::LintPassInfoBuilder;
 
 /// This struct blocks the construction of enum variants, similar to the `#[non_exhaustive]`
 /// attribute.
